@@ -4,16 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Etch-a-Sketch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@600&display=swap" rel="stylesheet">
     <link href="output.css" rel="stylesheet">
 </head>
 <body class = "bg-green-300">
     <div class = "py-32 px-10 "> 
-        <div class = "bg-red-600 w-[800px] h-[800px] m-auto">
+        <div class = "bg-red-600 w-[860px] h-[860px] m-auto rounded-xl shadow-2xl">
             <div class = "flex justify-center py-10">
-                <h1 class = "font-bold text-yellow-200 text-4xl">Etch-a-Sketch</h1>
+                <h1 class = " text-yellow-200 text-4xl font-s">Etch-a-Sketch</h1>
             </div>
             <div class = "bg-white max-w-[600px] h-[600px] m-auto" id = "board">
-
+            </div>
+            <div class = "p-4 flex justify-between items-center">
+                <div >
+                    <button class = " bg-yellow-50 rounded-full h-28 w-28" id = "color"> RGB</button>
+                </div>
+                <div>
+                    <button class = " bg-yellow-50 rounded-2xl h-14 w-28" id = "reset"> Reset </button>
+                </div>
+                <div>
+                    <button class = " bg-yellow-50 rounded-full h-28 w-28"> RGB </button>
+                </div>
             </div>
         </div>
     </div>
@@ -30,17 +43,70 @@
 
             for(let i = 0; i < numDivs; i++){
                 let div = document.createElement("div");
-                div.classList = "pixel"
-                board.appendChild(div)
+                div.classList = "pixel";
+                board.appendChild(div);
             }
         }
-        createBoard(8)
-        let pixels = document.querySelectorAll(".pixel");
-        pixels.forEach(pixel => {
-            pixel.addEventListener("click", () => {
+
+        function handlePixelClick(pixel) {
+            if (isColor) {
+                let maxVal = 0xFFFFFF; // 16777215
+                let randomNumber = Math.random() * maxVal; 
+                randomNumber = Math.floor(randomNumber);
+                randomNumber = randomNumber.toString(16);
+                let randColor = randomNumber.padStart(6, 0); 
+                pixel.style.backgroundColor = `#${randColor}`;
+            }
+            else {
                 pixel.style.backgroundColor = "black";
+            }
+        }
+
+        createBoard(16);
+
+        let isMouseDown = false;
+
+        document.addEventListener("mousedown", () => {
+            isMouseDown = true;
+        });
+
+        document.addEventListener("mouseup", () => {
+            isMouseDown = false;
+        });
+
+        let pixels = document.querySelectorAll(".pixel");
+        
+        pixels.forEach(pixel => {
+            pixel.addEventListener("mouseenter", () => {
+                if (isMouseDown) {
+                    handlePixelClick(pixel);
+                }
+            });
+        });
+
+        let color = document.querySelector("#color");
+
+        let isColor = false;
+
+        color.addEventListener('click', () => {
+            if(isColor){
+                isColor = false;
+                color.textContent = "RGB";
+            }
+            else {
+                isColor = true;
+                color.textContent = "Black";
+            }
+        })
+
+        let reset = document.querySelector('#reset'); 
+
+        reset.addEventListener('click', () =>{
+            pixels.forEach(pixel => {
+                pixel.style.backgroundColor = 'white';  
             })
         })
+
 
     </script>
 </body>

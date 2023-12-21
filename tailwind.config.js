@@ -2,7 +2,13 @@
 module.exports = {
   content: ["./dist/*.{html,js}"],
   theme: {
-    extend: {},
+    extend: {
+      extend: {
+        fontFamily: {
+          sansita: ['Sansita Swashed', 'sans-serif']
+        }
+      }
+    },
   },
   plugins: [],
 }
